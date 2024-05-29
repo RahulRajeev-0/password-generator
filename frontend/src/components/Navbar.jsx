@@ -5,8 +5,7 @@ import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
-import MenuIcon from '@mui/icons-material/Menu';
-
+import BasicMenu from './NavMenu';
 import { useNavigate } from 'react-router';
 
 export default function Navbar() {
@@ -15,15 +14,17 @@ export default function Navbar() {
     <Box sx={{ flexGrow: 1}}>
       <AppBar position="static"  sx={{ backgroundColor: '#d9c9c6', color:'black', border:' solid black', borderRadius:'10px'}}>
         <Toolbar>
-          <IconButton
+          {/* <IconButton
             size="large"
             edge="start"
             color="inherit"
             aria-label="menu"
-            sx={{ mr: 2 }}
+            
           >
-            <MenuIcon />
-          </IconButton>
+            
+           
+          </IconButton> */}
+          <BasicMenu sx={{ mr: 2 }}/>
           <Typography variant='h6' component="div" sx={{ flexGrow: 1 }}>
           SafePass
           </Typography>
