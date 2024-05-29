@@ -1,28 +1,36 @@
 import React from 'react'
 import './Register.css'
-
+import axios from 'axios';
+// import { validate } from '../../helpers/formValidation';
 import { useNavigate } from 'react-router'
+import { toast } from 'react-toastify';
+
+import { register } from '../../api/auth'
 
 const Register = () => {
   const navigate = useNavigate()
+  
   return (
     <>
    
      <div className="container">
       <div className="form_area">
         <p className="title">SIGN UP</p>
-        <form action="">
+
+        <form  onSubmit={register}>
+
+
           <div className="form_group">
             <label className="sub_title" htmlFor="name">User Name</label>
-            <input placeholder="Enter your full name" className="form_style" type="text" id="name" />
+            <input placeholder="Enter your full name" className="form_style" type="text" id="username" name='username' required/>
           </div>
           <div className="form_group">
             <label className="sub_title" htmlFor="email">Email</label>
-            <input placeholder="Enter your email" id="email" className="form_style" type="email" />
+            <input placeholder="Enter your email" id="email" className="form_style" type="email" name='email' required/>
           </div>
           <div className="form_group">
             <label className="sub_title" htmlFor="password">Password</label>
-            <input placeholder="Enter your password" id="password" className="form_style" type="password" />
+            <input placeholder="Enter your password" id="password" className="form_style" name='password' type="password" required/>
           </div>
           <div>
             <button className="btn" type="submit">SIGN UP</button>
