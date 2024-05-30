@@ -2,7 +2,7 @@ from rest_framework.serializers import ModelSerializer, ValidationError
 
 
 # models
-from account.models import User
+from account.models import User, Passwords
 
 
 class UserSerializer(ModelSerializer):
@@ -29,4 +29,7 @@ class UserRegistrationSerializer(ModelSerializer):
                 "password":'Password is not valid'
             })
         
-
+class PasswordSerializer(ModelSerializer):
+    class Meta:
+        model = Passwords
+        fields = ['id', 'account', 'passwords']

@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
+# from utils.encryption import encrypt_password, decrypt_password
 # Create your models here.
 
 
@@ -59,3 +60,14 @@ class User(AbstractBaseUser):
     
     def has_module_perms(self,add_label):
         return True
+    
+
+class Passwords(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    account = models.CharField(max_length=100)
+    passwords = models.CharField(max_length=100)
+
+    def __str__(self):
+        return self.account
+
+   

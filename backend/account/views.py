@@ -9,10 +9,10 @@ from rest_framework.response import Response
 
 from django.contrib.auth import authenticate
 # serializers 
-from account.serializers import UserRegistrationSerializer
+from account.serializers import UserRegistrationSerializer, PasswordSerializer
 
 # models
-from account.models import User
+from account.models import User, Passwords
 
 # Create your views here.
 class RegisterView(APIView):
@@ -69,4 +69,58 @@ class LoginView(APIView):
 
         return Response(content,status=status.HTTP_200_OK)
 
-    
+
+class MyPasswordView(APIView):
+    permission_classes = [IsAuthenticated]
+
+
+    def post (self, request):
+        try:
+            account = request.data.get('account')
+            password = request.data.get('password')
+            new_password = Passwords.objects.create(
+                user=request.user,
+                passwords=password,
+                account=account
+                )
+            new_password.save()
+            return Response({"message":'Password added successfully'},
+                             status=status.HTTP_201_CREATED)
+        
+        except Exception as e:
+            print(e)
+            return Response({'message':"something went wrong"},
+                             status=status.HTTP_400_BAD_REQUEST)
+        
+    def get(self, request):
+        try:
+            passwords = Passwords.objects.filter(user=request.user)
+            serializer = PasswordSerializer(passwords, many=True)
+            return Response(serializer.data, 
+                            status=status.HTTP_200_OK)
+        except Exception as e:
+            print(e)
+            return Response({'message':"something went wrong"},
+                             status=status.HTTP_400_BAD_REQUEST)
+        
+
+    def delete(self,request):
+        try:
+            password = Passwords.objects.get(id=request.data.get('id'))
+            if password.user == request.user:
+                password.delete()
+                return Response({'message':"Password Deleted Successfully"}, 
+                                status=status.HTTP_200_OK)
+            else:
+                return Response({'message':"You don't have the permission"}, 
+                                status=status.HTTP_403_FORBIDDEN)
+        except Exception as e:
+            print(e)
+            return Response({'message':"something went wrong"},
+                             status=status.HTTP_400_BAD_REQUEST)
+            
+
+            
+        
+
+
