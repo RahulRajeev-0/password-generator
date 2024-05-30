@@ -4,19 +4,35 @@ import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import MenuIcon from '@mui/icons-material/Menu';
 import { useNavigate } from 'react-router';
+import { set_authentication } from '../redux/authentication/AuthenticationSlice';
+import {  useDispatch } from 'react-redux';
+import { toast } from 'react-toastify';
 
 
 export default function BasicMenu() {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
   const navigate = useNavigate()
+  const dispatch = useDispatch();
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
   const handleClose = () => {
     setAnchorEl(null);
   };
-
+    
+    const logout = ()=>{
+      handleClose()
+      localStorage.clear();
+      dispatch(
+        set_authentication({
+          username:null,
+          isAuthenticated:false,
+        })
+      );
+      toast.warning("Logged out successfully ")
+      navigate("/")
+    }
   return (
     <div>
       <Button
@@ -39,7 +55,7 @@ export default function BasicMenu() {
       >
         {/* <MenuItem onClick={handleClose}>Profile</MenuItem> */}
         <MenuItem onClick={()=>navigate('/passwords')}>My Passwords</MenuItem>
-        <MenuItem onClick={handleClose}>Logout</MenuItem>
+        <MenuItem onClick={logout}>Logout</MenuItem>
       </Menu>
     </div>
   );

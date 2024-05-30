@@ -6,13 +6,13 @@ import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import BasicMenu from './NavMenu';
 import { useNavigate } from 'react-router';
-import { useSelector } from 'react-redux';
-
+import { useSelector, useDispatch } from 'react-redux';
 
 
 export default function Navbar() {
     const navigate = useNavigate()
     const user = useSelector((state) => state.authentication)
+    
   return (
     <Box sx={{ flexGrow: 1}}>
       <AppBar position="static"  sx={{ backgroundColor: '#d9c9c6', color:'black', border:' solid black', borderRadius:'10px'}}>
@@ -27,7 +27,10 @@ export default function Navbar() {
             
            
           </IconButton> */}
+          {user.isAuthenticated && (
+
           <BasicMenu sx={{ mr: 2 }}/>
+          )}
           <Typography variant='h6' component="div" sx={{ flexGrow: 1 }}>
           SafePass
           </Typography>
