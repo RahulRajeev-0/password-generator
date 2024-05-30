@@ -80,7 +80,7 @@ const Login = () => {
             <input placeholder="Enter your password" id="password" className="form_style" type="password" />
           </div>
           <div>
-            <button className="btn" type="submit">SIGN UP</button>
+            <button className="btn" type="submit">LOG IN</button>
             <p>Have an Account? <a onClick={()=>navigate('/register')}>Sign Up Here!</a></p>
           </div>
         </form>
