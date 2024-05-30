@@ -5,6 +5,7 @@ import { toast } from 'react-toastify';
 import { jwtDecode } from "jwt-decode";
 import {useDispatch} from 'react-redux';
 
+
 const BASE_URL = import.meta.env.VITE_API_BASE_URL
 
 
@@ -40,15 +41,9 @@ export const register = async (e)=>{
             toast.error('An error occurred. Please try again later.');
           }
          
-          if (error.response.status===406){
-            console.log("error")
-            console.log(error.response.data)
-           
-            toast.error(error.response.data.message);
-
-          } else{
+          
             console.log(error)
-          }
+          
         }
       }    
   }
