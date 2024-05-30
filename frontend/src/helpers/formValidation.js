@@ -45,3 +45,26 @@ export const  validate = (e)=>{
 
    return true;
   }
+
+
+
+export const loginValidate = (e) =>{
+   let email = e.target.email.value;
+   let password = e.target.password.value;
+
+   if (!email.includes('@') || !email.includes('.com') || email.includes(' ')){
+     toast.warning('Invalid Email Format')
+     return false;
+    }
+ 
+    if (password.includes(' ')){
+     toast.warning('Password should not include blank space')
+     return false;
+    }
+    if (password.length < 8 ){
+     toast.warning('Password Should Contain Atleast 8 Characters')
+     return false;
+    }
+    return true
+
+ }

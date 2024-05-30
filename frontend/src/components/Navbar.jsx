@@ -4,12 +4,15 @@ import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
-import IconButton from '@mui/material/IconButton';
 import BasicMenu from './NavMenu';
 import { useNavigate } from 'react-router';
+import { useSelector } from 'react-redux';
+
+
 
 export default function Navbar() {
     const navigate = useNavigate()
+    const user = useSelector((state) => state.authentication)
   return (
     <Box sx={{ flexGrow: 1}}>
       <AppBar position="static"  sx={{ backgroundColor: '#d9c9c6', color:'black', border:' solid black', borderRadius:'10px'}}>
@@ -28,7 +31,10 @@ export default function Navbar() {
           <Typography variant='h6' component="div" sx={{ flexGrow: 1 }}>
           SafePass
           </Typography>
-          <Button onClick={()=>navigate('/login')} color="inherit">Login</Button>
+          
+          {!user.isAuthenticated && (
+                        <Button onClick={() => navigate('/login')} color="inherit">Login</Button>
+                    )}
         </Toolbar>
       </AppBar>
     </Box>

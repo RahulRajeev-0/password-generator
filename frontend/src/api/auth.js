@@ -1,8 +1,11 @@
 
 import axios from 'axios';
-const BASE_URL = import.meta.env.VITE_API_BASE_URL
-import { validate } from '../helpers/formValidation';
+import { validate, loginValidate } from '../helpers/formValidation';
 import { toast } from 'react-toastify';
+
+import {useDispatch} from 'react-redux';
+
+const BASE_URL = import.meta.env.VITE_API_BASE_URL
 
 
 
@@ -47,8 +50,8 @@ export const register = async (e)=>{
             console.log(error)
           }
         }
-      
       }    
-    
-    
   }
+
+
+// const dispatch = useDispatch()

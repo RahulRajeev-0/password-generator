@@ -4,9 +4,10 @@ import Checkbox from '../../components/CheckBox';
 
 import Navbar from '../../components/Navbar';
 
-
+import { useSelector } from 'react-redux';
 
 const Home = () => {
+  const user = useSelector((state) => state.authentication)
   const [passwordGen, setPasswordGen] = useState({
     length: 5,
     uppercase: false,
@@ -169,10 +170,13 @@ const Home = () => {
             <button className="btn" onClick={generatePassword}>Generate Password</button>
             
           </div>
+          {user.isAuthenticated &&(
+
           <div style={{paddingBottom:'10px'}}>
             <button style={{background:'green'}} >Save Password</button>
             
           </div>
+          )}
           {/* <div style={{paddingBottom:'10px' }}>
             <button  >View Passwords</button>
             
