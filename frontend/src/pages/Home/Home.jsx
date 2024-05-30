@@ -3,10 +3,47 @@ import './Home.css';
 import Checkbox from '../../components/CheckBox';
 
 import Navbar from '../../components/Navbar';
-
+import { toast } from 'react-toastify';
 import { useSelector } from 'react-redux';
+import axios from 'axios';
+import Typography from '@mui/material/Typography';  
+import Dialog from '@mui/material/Dialog';
+import DialogTitle from '@mui/material/DialogTitle';
+import DialogContent from '@mui/material/DialogContent';
+import DialogActions from '@mui/material/DialogActions';
+import TextField from '@mui/material/TextField';
+import Button from '@mui/material/Button';
+import { useNavigate } from 'react-router';
+
 
 const Home = () => {
+  const [data, setData] = useState([]);
+  const [show, setShow] = useState(false);
+const BASE_URL = import.meta.env.VITE_API_BASE_URL
+
+  const navigate = useNavigate();
+  const handleClose = () =>{
+    setShow(false)
+    setPassword({
+      account: '',
+      password: '',
+    })
+  } ;
+  const handleShow = () => setShow(true);
+
+  const [password, setPassword] = useState({
+    account: '',
+    password: '',
+  });
+
+  const handleInputChange = (event) => {
+    const { name, value } = event.target;
+    setPassword(prevState => ({
+      ...prevState,
+      [name]: value,
+    }));
+  };
+
   const user = useSelector((state) => state.authentication)
   const [passwordGen, setPasswordGen] = useState({
     length: 5,
@@ -90,7 +127,33 @@ const Home = () => {
 
     generateTheWord(length, uppercase, lowercase, numbers, symbols);
   }
+  const handleSubmit = async () => {
+    if (password.account.trim() === '' || password.password.trim() === '') {
+      toast.warning("Please Fill all the required fields");
+      return;}
+      const token = localStorage.getItem('access')
+      const headers = {
+        'Authorization': `Bearer ${token}`, // Add space after 'Bearer'
+        'Content-Type': 'multipart/form-data', // Set content type to multipart/form-data for FormData
+      };
+      try{
+        
+        
+        const response = await axios.post(BASE_URL+`/account/my-password/`,
+        password,{ headers }
+         )
 
+         if (response.status === 201){
+          toast.success("Password Added Successfully")
+         }
+
+         handleClose()
+
+
+      }catch(error){
+        console.log(error)
+      }
+    }
   return (
     <>
 <Navbar/>
@@ -173,7 +236,7 @@ const Home = () => {
           {user.isAuthenticated &&(
 
           <div style={{paddingBottom:'10px'}}>
-            <button style={{background:'green'}} >Save Password</button>
+            <button style={{background:'green'}} onClick={handleShow} >Save Password</button>
             
           </div>
           )}
@@ -185,6 +248,58 @@ const Home = () => {
       
       </div>
     </div>
+
+    <Dialog open={show} onClose={handleClose} fullWidth maxWidth="sm">
+      <DialogTitle sx={{ display: 'flex', alignItems: 'center',color:'white', bgcolor: '#17141a'}}>
+        <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+          Create New Channel
+        </Typography>
+        <Button autoFocus onClick={handleClose} color="inherit" size="small">
+          x
+        </Button>
+      </DialogTitle>
+      <DialogContent sx={{ bgcolor: '#17141a', color: 'white' }}>
+      <TextField
+          autoFocus
+          margin="dense"
+          id="account"
+          label="Account"
+          type="text"
+          fullWidth
+          variant="standard"
+          required
+          maxLength={50}
+          name="account"
+          value={password.account}
+          onChange={handleInputChange}
+          InputLabelProps={{ style: { color: 'white' } }} // Set label color to white
+          InputProps={{ style: { color: 'white' } }} // Set input color to white
+        />
+        <TextField
+          id="password"
+          label="Password"
+          multiline
+          rows={3}
+          fullWidth
+          variant="standard"
+          required
+          maxLength={250}
+          name="password"
+          value={password.password}
+          onChange={handleInputChange}
+          InputLabelProps={{ style: { color: 'white' } }} // Set label color to white
+          InputProps={{ style: { color: 'white' } }} // Set input color to white
+        />
+      </DialogContent>
+      <DialogActions sx={{bgcolor:"#17141a"}}>
+        <Button onClick={handleClose} variant="contained" color="secondary">
+          Close
+        </Button>
+        <Button onClick={handleSubmit} variant="contained" color="primary">
+          Add
+        </Button>
+      </DialogActions>
+    </Dialog>
             </>
   );
 };
